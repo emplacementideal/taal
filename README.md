@@ -1,5 +1,5 @@
 What is Taal?
--------------
+=============
 
 Taal is a Docker image that provides several command-line data science tools.
 
@@ -20,7 +20,7 @@ Taal being based on Debian, it also provides general purpose Unix commands that 
 such as `head` or `iconv`.
 
 Getting Started
----------------
+===============
 
 Taal being a Docker image, a Docker environment is needed to use it. Please see
 [Docker documentation](https://docs.docker.com/) for instructions.
