@@ -1,0 +1,4 @@
+.dockerignore
+.editorconfig
+Dockerfile
+Makefile
