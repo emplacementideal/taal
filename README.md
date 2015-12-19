@@ -34,9 +34,11 @@ Data Graphing
 Archive Management
 ------------------
 
+* [7zip](http://www.7-zip.org/)
 * bzip2
 * gzip
 * tar
+* unzip
 
 Encoding Management
 -------------------

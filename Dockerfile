@@ -19,12 +19,14 @@ ENV LC_ALL en_US.UTF-8
 # Install system packages as well as GDAL and gnuplot
 RUN apt-get update                    \
     && apt-get install -y             \
+        p7zip                         \
         curl                          \
         gdal-bin=$GDAL_VERSION        \
         gnuplot                       \
         locales                       \
         python-pip                    \
         sudo                          \
+        unzip                         \
         wget                          \
     && apt-get autoremove -y          \
     && apt-get clean                  \
