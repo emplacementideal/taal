@@ -1,12 +1,12 @@
-FROM debian:8.2
+FROM ubuntu:15.10
 MAINTAINER Emplacement Idéal Labs <labs@emplacementideal.com>
 
 # Set tool versions
 ENV CSVFIX_VERSION   1.6
 ENV CVSKIT_VERSION   0.9.1
-ENV GDAL_VERSION     1.10.1+dfsg-8+b3
+ENV GDAL_VERSION     1.11.2+dfsg-3ubuntu3
 ENV GNUPLOT_VERSION  4.6.6-2
-ENV HTTPIE_VERSION   0.9.2
+ENV HTTPIE_VERSION   0.9.2-0.1
 ENV JQ_VERSION       1.5
 ENV UCHARDET_VERSION 0.0.5
 
@@ -19,11 +19,12 @@ ENV LC_ALL en_US.UTF-8
 # Install system packages as well as GDAL and gnuplot
 RUN apt-get update                    \
     && apt-get install -y             \
-        p7zip                         \
         curl                          \
         gdal-bin=$GDAL_VERSION        \
         gnuplot                       \
+        httpie=$HTTPIE_VERSION        \
         locales                       \
+        p7zip                         \
         python-pip                    \
         sudo                          \
         unzip                         \
@@ -53,9 +54,8 @@ RUN apt-get update                                             \
     && apt-get clean                                           \
     && rm -rf /var/lib/apt/lists/*
 
-# Install csvkit and HTTPie
+# Install csvkit
 RUN pip install csvkit==$CVSKIT_VERSION \
-    && pip install httpie==$HTTPIE_VERSION \
     && rm -rf /tmp/pip_build_root
 
 # Install jq and uchardet
