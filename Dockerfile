@@ -10,7 +10,10 @@ ENV HTTPIE_VERSION   0.9.2-0.1
 ENV JQ_VERSION       1.5
 ENV UCHARDET_VERSION 0.0.5
 
-# Set Environment Variables & Language Environment
+# Set TAAL variables
+ENV HOME /taal
+
+# Set environment variables
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8:en.UTF-8
@@ -42,6 +45,24 @@ RUN locale-gen en_US.UTF-8 \
 RUN echo "Etc/UTC" > /etc/timezone \
     && dpkg-reconfigure tzdata
 
+# Configure sudo
+RUN sed --in-place --expression="s/\%sudo\t\ALL=(ALL:ALL) ALL/\%sudo\tALL=(ALL) NOPASSWD:ALL/" /etc/sudoers
+
+# Create taal user
+RUN useradd --groups sudo --create-home --home-dir=$HOME --shell /bin/bash taal  \
+    && echo "taal:taal" | chpasswd
+
+# Configure Bash
+COPY ./files/.bashrc /root/.bashrc
+COPY ./files/.bashrc $HOME/.bashrc
+RUN chown -R taal:taal $HOME
+
+# Create placeholder folders
+RUN mkdir --mode=777 $HOME/data         \
+    && chown -R taal:taal $HOME/data    \
+    && mkdir --mode=777 $HOME/scripts   \
+    && chown -R taal:taal $HOME/scripts
+
 # Install csvfix
 RUN apt-get update                                             \
     && apt-get install -y g++ make mercurial                   \
@@ -71,22 +92,6 @@ RUN apt-get update                                                              
     && apt-get autoremove -y                                                                                                       \
     && apt-get clean                                                                                                               \
     && rm -rf /var/lib/apt/lists/*
-
-# Create taal user and remove password need to use sudo
-RUN useradd --groups sudo --create-home --home-dir=/taal --shell /bin/bash taal                                 \
-    && echo "taal:taal" | chpasswd                                                                              \
-    && sed --in-place --expression="s/\%sudo\t\ALL=(ALL:ALL) ALL/\%sudo\tALL=(ALL) NOPASSWD:ALL/" /etc/sudoers
-
-# Configure Bash
-COPY ./files/.bashrc /root/.bashrc
-COPY ./files/.bashrc /taal/.bashrc
-RUN chown -R taal:taal /taal/
-
-# Create placeholder folders
-RUN mkdir --mode=777 /taal/data         \
-    && chown -R taal:taal /taal/data    \
-    && mkdir --mode=777 /taal/scripts   \
-    && chown -R taal:taal /taal/scripts
 
 # Run Bash
 USER taal
