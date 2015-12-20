@@ -5,7 +5,7 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 alias h='history'
-alias ll='ls -ahl'
+alias ll='ls -hl'
 alias ls='ls --color=auto'
 
 # Allow aliases to be sudo’ed
@@ -28,8 +28,8 @@ export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;32'
 
 # Add the "scripts" folder to PATH to ease use of custom scripts
-export PATH=$PATH:/home/taal/scripts
+export PATH=$PATH:/taal/scripts
 
 # Export paths to special folders
-export DATA_DIR=/home/taal/data
-export SCRIPTS_DIR=/home/taal/scripts
+export DATA_DIR=/taal/data
+export SCRIPTS_DIR=/taal/scripts
