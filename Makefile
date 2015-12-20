@@ -1,7 +1,7 @@
 .PHONY: build run push usage
 .DEFAULT: usage
 
-TAG = latest
+TAG = dev
 
 usage:
 	@echo ""
