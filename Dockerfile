@@ -50,7 +50,8 @@ RUN sed --in-place --expression="s/\%sudo\t\ALL=(ALL:ALL) ALL/\%sudo\tALL=(ALL) 
 
 # Create taal user
 RUN useradd --groups sudo --create-home --home-dir=$HOME --shell /bin/bash taal  \
-    && echo "taal:taal" | chpasswd
+    && echo "taal:taal" | chpasswd                                               \
+    && touch $HOME/.sudo_as_admin_successful
 
 # Configure Bash
 COPY ./files/.bashrc /root/.bashrc
