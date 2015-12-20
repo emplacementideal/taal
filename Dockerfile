@@ -72,16 +72,22 @@ RUN apt-get update                                                              
     && rm -rf /var/lib/apt/lists/*
 
 # Create taal user and remove password need to use sudo
-RUN useradd --groups sudo --create-home --shell /bin/bash taal                                                  \
+RUN useradd --groups sudo --create-home --home-dir=/taal --shell /bin/bash taal                                 \
     && echo "taal:taal" | chpasswd                                                                              \
     && sed --in-place --expression="s/\%sudo\t\ALL=(ALL:ALL) ALL/\%sudo\tALL=(ALL) NOPASSWD:ALL/" /etc/sudoers
 
 # Configure Bash
 COPY ./files/.bashrc /root/.bashrc
-COPY ./files/.bashrc /home/taal/.bashrc
-RUN chown -R taal:taal /home/taal/
+COPY ./files/.bashrc /taal/.bashrc
+RUN chown -R taal:taal /taal/
+
+# Create placeholder folders
+RUN mkdir --mode=777 /taal/data         \
+    && chown -R taal:taal /taal/data    \
+    && mkdir --mode=777 /taal/scripts   \
+    && chown -R taal:taal /taal/scripts
 
 # Run Bash
 USER taal
-WORKDIR /home/taal
+WORKDIR /taal
 ENTRYPOINT ["bash"]

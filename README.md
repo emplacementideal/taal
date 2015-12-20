@@ -63,6 +63,15 @@ A container can then be run:
 
     $ docker run -it emplacementideal/taal
     
-A local folder can be mounted to share data and scripts with the container:
+Special Folders
+===============
 
-    $ docker run -it -v `pwd`/data:/data emplacementideal/taal
+It is often convenient to share data and scripts  stored on the host computer with Taal. There are two special mount points for that purpose `/taal/data` and `/taal/scripts`.
+    
+Local folders can be easily mounted to these mount points thanks to Docker volumes:
+
+    $ docker run -it -v `pwd`/data:/taal/data -v `pwd`/scripts:/taal/scripts emplacementideal/taal
+
+This command being quite verbose you might want to abstract it in a script or a Makefile.
+
+The `/taal/scripts` folder is in the `$PATH` so any script stored there is directly available from anywhere.

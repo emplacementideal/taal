@@ -26,3 +26,10 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 # Always enable colored `grep` output
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;32'
+
+# Add the "scripts" folder to PATH to ease use of custom scripts
+export PATH=$PATH:/home/taal/scripts
+
+# Export paths to special folders
+export DATA_DIR=/home/taal/data
+export SCRIPTS_DIR=/home/taal/scripts
