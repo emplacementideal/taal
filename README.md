@@ -21,7 +21,7 @@ Data Retrieval
 Data Manipulation
 -----------------
 
-* [csvkit](https://github.com/onyxfish/csvkit)
+* [csvkit](https://github.com/onyxfish/csvkit) (including connectors for MySQL and PostgreSQL)
 * [csvfix](http://neilb.bitbucket.org/csvfix/)
 * [GDAL](http://www.gdal.org/)
 * [jq](https://stedolan.github.io/jq/)

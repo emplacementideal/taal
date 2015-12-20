@@ -79,6 +79,8 @@ RUN hg clone https://bitbucket.org/neilb/csvfix /tmp/csvfix \
 
 # Install csvkit
 RUN pip install csvkit==$CVSKIT_VERSION \
+    && pip install MySQL-python         \
+    && pip install psycopg2             \
     && rm -rf /tmp/pip_build_root
 
 # Install jq and uchardet
