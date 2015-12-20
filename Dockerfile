@@ -22,12 +22,18 @@ ENV LC_ALL en_US.UTF-8
 # Install system packages as well as GDAL and gnuplot
 RUN apt-get update                    \
     && apt-get install -y             \
+        build-essential               \
+        cmake                         \
         curl                          \
         gdal-bin=$GDAL_VERSION        \
         gnuplot                       \
         httpie=$HTTPIE_VERSION        \
+        libmysqlclient-dev            \
+        libpq-dev                     \
         locales                       \
+        mercurial                     \
         p7zip                         \
+        python-dev                    \
         python-pip                    \
         sudo                          \
         unzip                         \
@@ -65,34 +71,22 @@ RUN mkdir --mode=777 $HOME/data         \
     && chown -R taal:taal $HOME/scripts
 
 # Install csvfix
-RUN apt-get update                                             \
-    && apt-get install -y g++ make mercurial                   \
-    && hg clone https://bitbucket.org/neilb/csvfix /tmp/csvfix \
-    && (cd /tmp/csvfix && hg up "version-$CSVFIX_VERSION")     \
-    && make --directory=/tmp/csvfix lin                        \
-    && cp /tmp/csvfix/csvfix/bin/csvfix /usr/local/bin         \
-    && rm -rf /tmp/csvfix                                      \
-    && apt-get remove -y g++ make mercurial                    \
-    && apt-get autoremove -y                                   \
-    && apt-get clean                                           \
-    && rm -rf /var/lib/apt/lists/*
+RUN hg clone https://bitbucket.org/neilb/csvfix /tmp/csvfix \
+    && (cd /tmp/csvfix && hg up "version-$CSVFIX_VERSION")  \
+    && make --directory=/tmp/csvfix lin                     \
+    && cp /tmp/csvfix/csvfix/bin/csvfix /usr/local/bin      \
+    && rm -rf /tmp/csvfix
 
 # Install csvkit
 RUN pip install csvkit==$CVSKIT_VERSION \
     && rm -rf /tmp/pip_build_root
 
 # Install jq and uchardet
-RUN apt-get update                                                                                                                 \
-    && apt-get install -y build-essential cmake                                                                                    \
-    && wget --quiet --output-document=/usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-$JQ_VERSION/jq-linux64 \
-    && chmod +x /usr/local/bin/jq                                                                                                  \
-    && wget --quiet -O - https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/                   \
-    && (cd /tmp/uchardet-$UCHARDET_VERSION && cmake . && make && make install)                                                     \
-    && rm -rf /tmp/uchardet-$UCHARDET_VERSION                                                                                      \
-    && apt-get remove -y build-essential cmake                                                                                     \
-    && apt-get autoremove -y                                                                                                       \
-    && apt-get clean                                                                                                               \
-    && rm -rf /var/lib/apt/lists/*
+RUN wget --quiet --output-document=/usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-$JQ_VERSION/jq-linux64 \
+    && chmod +x /usr/local/bin/jq                                                                                               \
+    && wget --quiet -O - https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/                \
+    && (cd /tmp/uchardet-$UCHARDET_VERSION && cmake . && make && make install)                                                  \
+    && rm -rf /tmp/uchardet-$UCHARDET_VERSION
 
 # Run Bash
 USER taal
