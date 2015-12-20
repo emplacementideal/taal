@@ -28,6 +28,7 @@ RUN apt-get update                    \
         python-pip                    \
         sudo                          \
         unzip                         \
+        vim                           \
         wget                          \
     && apt-get autoremove -y          \
     && apt-get clean                  \
