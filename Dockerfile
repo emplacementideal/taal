@@ -6,6 +6,9 @@ ENV CSVFIX_VERSION    1.6
 ENV CVSKIT_VERSION    0.9.1
 ENV DRAKE_COMMIT_HASH ef36be08d0499c851546c60b020d5bb198263eb2
 ENV DRAKE_VERSION     1.0.1
+ENV DRIP_HOME         /tmp/.drip
+ENV DRIP_COMMIT_HASH  master
+ENV DRIP_VERSION      0.2.5
 ENV JQ_VERSION        1.5
 ENV UCHARDET_VERSION  0.0.5
 
@@ -25,6 +28,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         curl                                      \
         gdal-bin                                  \
         feedgnuplot                               \
+        git                                       \
         gnuplot                                   \
         httpie                                    \
         less                                      \
@@ -98,6 +102,12 @@ RUN mkdir -p $HOME/.drakerc/jar                                                 
     && wget --quiet --output-document=$HOME/.drakerc/jar/drake-${DRAKE_VERSION}-standalone.jar https://github.com/Factual/drake/releases/download/${DRAKE_VERSION}/drake.jar \
     && wget --quiet --output-document=/bin/drake https://raw.githubusercontent.com/Factual/drake/${DRAKE_COMMIT_HASH}/bin/drake                                              \
     && chmod 755 /bin/drake
+
+# Install Drip
+RUN wget --quiet --output-document=/bin/drip https://raw.githubusercontent.com/ninjudd/drip/${DRIP_COMMIT_HASH}/bin/drip \
+    && chmod 755 /bin/drip                                                                                               \
+    && mkdir -p --mode=777 $DRIP_HOME/$DRIP_VERSION                                                                                 \
+    && /bin/drip upgrade
 
 # Run Bash
 USER taal
