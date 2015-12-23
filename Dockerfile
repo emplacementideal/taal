@@ -16,35 +16,34 @@ ENV UCHARDET_VERSION  0.0.5
 ENV HOME /taal
 
 # Set environment variables
-ENV DEBIAN_FRONTEND noninteractive
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8:en.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 # Install system packages as well as GDAL and gnuplot
-RUN apt-get update                    \
-    && apt-get install -y             \
-        build-essential               \
-        cmake                         \
-        curl                          \
-        gdal-bin=$GDAL_VERSION        \
-        gnuplot                       \
-        httpie=$HTTPIE_VERSION        \
-        libmysqlclient-dev            \
-        libpq-dev                     \
-        locales                       \
-        mercurial                     \
-        ntp                           \
-        openjdk-8-jdk                 \
-        p7zip                         \
-        python-dev                    \
-        python-pip                    \
-        sudo                          \
-        unzip                         \
-        vim                           \
-        wget                          \
-    && apt-get autoremove -y          \
-    && apt-get clean                  \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y                         \
+        build-essential                           \
+        cmake                                     \
+        curl                                      \
+        gdal-bin=$GDAL_VERSION                    \
+        gnuplot                                   \
+        httpie=$HTTPIE_VERSION                    \
+        libmysqlclient-dev                        \
+        libpq-dev                                 \
+        locales                                   \
+        mercurial                                 \
+        ntp                                       \
+        openjdk-8-jdk                             \
+        p7zip                                     \
+        python-dev                                \
+        python-pip                                \
+        sudo                                      \
+        unzip                                     \
+        vim                                       \
+        wget                                      \
+    && apt-get autoremove -y                      \
+    && apt-get clean                              \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure locales
