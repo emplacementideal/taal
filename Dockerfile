@@ -2,13 +2,15 @@ FROM ubuntu:15.10
 MAINTAINER Emplacement Idéal Labs <labs@emplacementideal.com>
 
 # Set tool versions
-ENV CSVFIX_VERSION   1.6
-ENV CVSKIT_VERSION   0.9.1
-ENV GDAL_VERSION     1.11.2+dfsg-3ubuntu3
-ENV GNUPLOT_VERSION  4.6.6-2
-ENV HTTPIE_VERSION   0.9.2-0.1
-ENV JQ_VERSION       1.5
-ENV UCHARDET_VERSION 0.0.5
+ENV CSVFIX_VERSION    1.6
+ENV CVSKIT_VERSION    0.9.1
+ENV DRAKE_COMMIT_HASH ef36be08d0499c851546c60b020d5bb198263eb2
+ENV DRAKE_VERSION     1.0.1
+ENV GDAL_VERSION      1.11.2+dfsg-3ubuntu3
+ENV GNUPLOT_VERSION   4.6.6-2
+ENV HTTPIE_VERSION    0.9.2-0.1
+ENV JQ_VERSION        1.5
+ENV UCHARDET_VERSION  0.0.5
 
 # Set TAAL variables
 ENV HOME /taal
@@ -32,6 +34,7 @@ RUN apt-get update                    \
         libpq-dev                     \
         locales                       \
         mercurial                     \
+        openjdk-8-jdk                 \
         p7zip                         \
         python-dev                    \
         python-pip                    \
@@ -89,6 +92,12 @@ RUN wget --quiet --output-document=/usr/local/bin/jq https://github.com/stedolan
     && wget --quiet -O - https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/                \
     && (cd /tmp/uchardet-$UCHARDET_VERSION && cmake . && make && make install)                                                  \
     && rm -rf /tmp/uchardet-$UCHARDET_VERSION
+
+# Install Drake
+RUN mkdir -p $HOME/.drakerc/jar                                                                                                                                              \
+    && wget --quiet --output-document=$HOME/.drakerc/jar/drake-${DRAKE_VERSION}-standalone.jar https://github.com/Factual/drake/releases/download/${DRAKE_VERSION}/drake.jar \
+    && wget --quiet --output-document=/bin/drake https://raw.githubusercontent.com/Factual/drake/${DRAKE_COMMIT_HASH}/bin/drake                                              \
+    && chmod 755 /bin/drake
 
 # Run Bash
 USER taal
