@@ -34,6 +34,7 @@ RUN apt-get update                    \
         libpq-dev                     \
         locales                       \
         mercurial                     \
+        ntp                           \
         openjdk-8-jdk                 \
         p7zip                         \
         python-dev                    \
