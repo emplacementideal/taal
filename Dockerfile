@@ -27,8 +27,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         cmake                                     \
         curl                                      \
         gdal-bin=$GDAL_VERSION                    \
+        feedgnuplot                               \
         gnuplot                                   \
         httpie=$HTTPIE_VERSION                    \
+        less                                      \
         libmysqlclient-dev                        \
         libpq-dev                                 \
         locales                                   \
@@ -36,6 +38,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         ntp                                       \
         openjdk-8-jdk                             \
         p7zip                                     \
+        pv                                        \
         python-dev                                \
         python-pip                                \
         sudo                                      \
