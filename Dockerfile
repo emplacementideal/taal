@@ -6,9 +6,6 @@ ENV CSVFIX_VERSION    1.6
 ENV CVSKIT_VERSION    0.9.1
 ENV DRAKE_COMMIT_HASH ef36be08d0499c851546c60b020d5bb198263eb2
 ENV DRAKE_VERSION     1.0.1
-ENV GDAL_VERSION      1.11.2+dfsg-3ubuntu3
-ENV GNUPLOT_VERSION   4.6.6-2
-ENV HTTPIE_VERSION    0.9.2-0.1
 ENV JQ_VERSION        1.5
 ENV UCHARDET_VERSION  0.0.5
 
@@ -26,10 +23,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
         build-essential                           \
         cmake                                     \
         curl                                      \
-        gdal-bin=$GDAL_VERSION                    \
+        gdal-bin                                  \
         feedgnuplot                               \
         gnuplot                                   \
-        httpie=$HTTPIE_VERSION                    \
+        httpie                                    \
         less                                      \
         libmysqlclient-dev                        \
         libpq-dev                                 \
