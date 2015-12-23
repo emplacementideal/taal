@@ -22,7 +22,7 @@ ENV LC_ALL en_US.UTF-8
 
 # Install system packages as well as GDAL and gnuplot
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
-    && apt-get install -y                         \
+    && apt-get install --yes                      \
         build-essential                           \
         cmake                                     \
         curl                                      \
@@ -89,7 +89,7 @@ RUN pip install csvkit==$CVSKIT_VERSION \
 # Install jq and uchardet
 RUN wget --quiet --output-document=/usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-$JQ_VERSION/jq-linux64 \
     && chmod +x /usr/local/bin/jq                                                                                               \
-    && wget --quiet -O - https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/                \
+    && wget --quiet --output-document=- https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/                \
     && (cd /tmp/uchardet-$UCHARDET_VERSION && cmake . && make && make install)                                                  \
     && rm -rf /tmp/uchardet-$UCHARDET_VERSION
 
