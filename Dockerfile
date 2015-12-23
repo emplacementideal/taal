@@ -90,10 +90,12 @@ RUN pip install csvkit==$CVSKIT_VERSION \
     && pip install psycopg2             \
     && rm -rf /tmp/pip_build_root
 
-# Install jq and uchardet
+# Install jq
 RUN wget --quiet --output-document=/usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-$JQ_VERSION/jq-linux64 \
-    && chmod +x /usr/local/bin/jq                                                                                               \
-    && wget --quiet --output-document=- https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/                \
+    && chmod +x /usr/local/bin/jq
+
+# Install uchardet
+RUN wget --quiet --output-document=- https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/    \
     && (cd /tmp/uchardet-$UCHARDET_VERSION && cmake . && make && make install)                                                  \
     && rm -rf /tmp/uchardet-$UCHARDET_VERSION
 
