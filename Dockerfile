@@ -1,5 +1,5 @@
 FROM ubuntu:15.10
-MAINTAINER Emplacement Idéal Labs <labs@emplacementideal.com>
+MAINTAINER Pentimento <labs@pentimento.io>
 
 # Set tool versions
 ENV CSVFIX_VERSION    1.6

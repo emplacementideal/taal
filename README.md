@@ -57,11 +57,11 @@ Taal being a Docker image, a Docker environment is needed to use it. Please see
 
 In order to run a container the Taal Docker image must be pulled from Docker Hub:
 
-    $ docker pull emplacementideal/taal
+    $ docker pull pentimento/taal
     
 A container can then be run:
 
-    $ docker run -it emplacementideal/taal
+    $ docker run -it pentimento/taal
     
 Special Folders
 ===============
@@ -70,7 +70,7 @@ It is often convenient to share data and scripts  stored on the host computer wi
     
 Local folders can be easily mounted to these mount points thanks to Docker volumes:
 
-    $ docker run -it -v `pwd`/data:/taal/data -v `pwd`/scripts:/taal/scripts emplacementideal/taal
+    $ docker run -it -v `pwd`/data:/taal/data -v `pwd`/scripts:/taal/scripts pentimento/taal
 
 This command being quite verbose you might want to abstract it in a script or a Makefile.
 
