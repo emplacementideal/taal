@@ -57,11 +57,11 @@ Taal being a Docker image, a Docker environment is needed to use it. Please see
 
 In order to run a container the Taal Docker image must be pulled from Docker Hub:
 
-    $ docker pull emplacementideal/taal
+    $ docker pull pentimento/taal
     
 A container can then be run:
 
-    $ docker run -it emplacementideal/taal
+    $ docker run -it pentimento/taal
     
 Special Folders
 ===============
@@ -70,8 +70,24 @@ It is often convenient to share data and scripts  stored on the host computer wi
     
 Local folders can be easily mounted to these mount points thanks to Docker volumes:
 
-    $ docker run -it -v `pwd`/data:/taal/data -v `pwd`/scripts:/taal/scripts emplacementideal/taal
+    $ docker run -it -v `pwd`/data:/taal/data -v `pwd`/scripts:/taal/scripts pentimento/taal
 
 This command being quite verbose you might want to abstract it in a script or a Makefile.
 
 The `/taal/scripts` folder is in the `$PATH` so any script stored there is directly available from anywhere.
+
+License
+=======
+
+Copyright 2016 Pentimento
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software   distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
