@@ -11,10 +11,10 @@ usage:
 	@echo ""
 
 build:
-	@docker build -t pentimento/taal:$(TAG) .
+	@docker build -t pentimentolabs/taal:$(TAG) .
 
 push:
-	@docker push pentimento/taal:$(TAG)
+	@docker push pentimentolabs/taal:$(TAG)
 
 run:
-	@docker run --rm -it pentimento/taal:$(TAG)
+	@docker run --rm -it pentimentolabs/taal:$(TAG)
