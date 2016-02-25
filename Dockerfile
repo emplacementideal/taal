@@ -1,5 +1,5 @@
 FROM ubuntu:15.10
-MAINTAINER Pentimento <labs@pentimento.io>
+MAINTAINER PentimentoLabs <contact@pentimentolabs.com>
 
 # Set tool versions
 ENV CSVFIX_VERSION    1.6
