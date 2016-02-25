@@ -1,24 +1,19 @@
 FROM ubuntu:15.10
 MAINTAINER PentimentoLabs <contact@pentimentolabs.com>
 
-# Set tool versions
-ENV CSVFIX_VERSION    1.6
-ENV CVSKIT_VERSION    0.9.1
-ENV DRAKE_COMMIT_HASH ef36be08d0499c851546c60b020d5bb198263eb2
-ENV DRAKE_VERSION     1.0.1
-ENV DRIP_HOME         /tmp/.drip
-ENV DRIP_COMMIT_HASH  master
-ENV DRIP_VERSION      0.2.5
-ENV JQ_VERSION        1.5
-ENV UCHARDET_VERSION  0.0.5
-
-# Set TAAL variables
-ENV HOME /taal
-
-# Set environment variables
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8:en.UTF-8
-ENV LC_ALL en_US.UTF-8
+ENV CSVFIX_VERSION=1.6                                                         \
+    CVSKIT_VERSION=0.9.1                                                       \
+    DRAKE_COMMIT_HASH=ef36be08d0499c851546c60b020d5bb198263eb2                 \
+    DRAKE_VERSION=1.0.1                                                        \
+    DRIP_HOME=/tmp/.drip                                                       \
+    DRIP_COMMIT_HASH=master                                                    \
+    DRIP_VERSION=0.2.5                                                         \
+    JQ_VERSION=1.5                                                             \
+    UCHARDET_VERSION=0.0.5                                                     \
+    HOME=/taal                                                                 \
+    LANG=en_US.UTF-8                                                           \
+    LANGUAGE=en_US.UTF-8:en.UTF-8                                              \
+    LC_ALL=en_US.UTF-8
 
 # Install system packages as well as GDAL and gnuplot
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
