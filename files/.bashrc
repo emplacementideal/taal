@@ -4,18 +4,17 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
+alias grep='grep --color=auto'
 alias h='history'
 alias ll='ls -hl'
 alias ls='ls --color=auto'
 
-# Allow aliases to be sudo’ed
-alias sudo='sudo '
-
 # Define some env vars
 export EDITOR='vi'
-export PS1='\e[33;1m\u\e[0m:\w\$ '
+export PS1='\w\$ '
 
 # Larger bash history (allow 32³ entries; default is 500)
+export HISTFILE=/root/workbench/.bash_history
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
 export HISTCONTROL=ignoredups
@@ -23,13 +22,11 @@ export HISTCONTROL=ignoredups
 # Make some commands not show up in history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
-# Always enable colored `grep` output
-export GREP_OPTIONS='--color=auto'
-export GREP_COLOR='1;32'
+# Add the "root" folder to PATH to ease use of custom scripts
+export PATH=$PATH:/root/toolbox
 
-# Add the "scripts" folder to PATH to ease use of custom scripts
-export PATH=$PATH:/taal/scripts
-
-# Export paths to special folders
-export DATA_DIR=/taal/data
-export SCRIPTS_DIR=/taal/scripts
+# Export paths to special folders for future-proof scripting
+export TAAL_DATA_DIR=/root/data
+export TAAL_SUPPLIES_DIR=/root/supplies
+export TAAL_TOOLBOX_DIR=/root/scripts
+export TAAL_WORKBENCH_DIR=/root/workbench
