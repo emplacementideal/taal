@@ -14,7 +14,7 @@ RUN apk add --no-cache bash ca-certificates curl graphviz vim
 
 # Install Python environment
 ENV PYTHON_VERSION=2.7.11-r3
-RUN apk add --no-cache py-pip python                                           \
+RUN apk add --no-cache py-pip python=${PYTHON_VERSION}                         \
     && pip install --upgrade pip setuptools
 
 # Install Java environment
