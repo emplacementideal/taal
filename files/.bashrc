@@ -30,3 +30,6 @@ export TAAL_DATA_DIR=/root/data
 export TAAL_SUPPLIES_DIR=/root/supplies
 export TAAL_TOOLBOX_DIR=/root/scripts
 export TAAL_WORKBENCH_DIR=/root/workbench
+
+# Export shell to workaround a quirk (see https://github.com/Factual/drake/issues/196)
+export SHELL=/bin/bash
