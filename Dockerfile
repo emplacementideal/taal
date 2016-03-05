@@ -2,6 +2,9 @@ FROM alpine:3.3
 MAINTAINER PentimentoLabs <contact@pentimentolabs.com>
 ENV TAAL_VERSION=0.5.0-dev
 
+# Define charset
+ENV LANG=en_US.utf8
+
 # Define timezone
 ENV TIMEZONE=Europe/Paris
 RUN apk add --no-cache tzdata                                                  \
