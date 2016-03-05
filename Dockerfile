@@ -64,6 +64,9 @@ RUN apk add --no-cache --virtual build-dependencies gcc libc-dev make           
     && rm -rf /tmp/pv-${PV_VERSION}                                                                \
     && apk del --purge build-dependencies
 
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
+
 # Configure workspace
 RUN mkdir /root/workbench
 COPY ./files/.bashrc /root/.bashrc
