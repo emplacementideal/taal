@@ -42,7 +42,9 @@ RUN apk add --no-cache jq=${JQ_VERSION}
 
 # Install CSVKit
 ENV CVSKIT_VERSION=0.9.1
-RUN pip install --no-cache-dir --upgrade csvkit==${CVSKIT_VERSION} pip
+RUN apk add --no-cache --virtual build-dependencies gcc musl-dev postgresql-dev python-dev \
+    && pip install --no-cache-dir --upgrade csvkit==${CVSKIT_VERSION} psycopg2             \
+    && apk del --purge build-dependencies
 
 # Install HTTPie
 ENV HTTPIE_VERSION=0.9.3
