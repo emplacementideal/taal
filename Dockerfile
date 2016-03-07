@@ -21,7 +21,7 @@ RUN apk add --no-cache py-pip python=${PYTHON_VERSION}                         \
     && pip install --upgrade pip setuptools
 
 # Install Java environment
-ENV OPENJDK_VERSION=8.66.17-r2
+ENV OPENJDK_VERSION=8.72.15-r2
 RUN apk add --no-cache openjdk8=${OPENJDK_VERSION}
 
 # Install Node.js environment
