@@ -69,6 +69,10 @@ RUN apk add --no-cache --virtual build-dependencies gcc libc-dev make           
 # Install PostgreSQL client
 RUN apk add --no-cache postgresql-client
 
+# Install AWS CLI
+ENV AWSCLI_VERSION=1.10.10
+RUN pip install --no-cache-dir --upgrade awscli==${AWSCLI_VERSION}
+
 # Configure workspace
 RUN mkdir /root/workbench
 COPY ./files/.bashrc /root/.bashrc
