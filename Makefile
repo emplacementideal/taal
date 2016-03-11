@@ -1,20 +1,18 @@
-.PHONY: build run push usage
-.DEFAULT: usage
+TAG := dev
 
-TAG = dev
+.DEFAULT: help
+.PHONY: help
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
-usage:
-	@echo ""
-	@echo "make build          Build Taal Docker image"
-	@echo "make push           Publish Taal image to Docker Hub"
-	@echo "make run            Run a Docker container from the Taal image"
-	@echo ""
-
-build:
+.PHONY: build
+build: ## Build Taal Docker image
 	@docker build -t pentimentolabs/taal:$(TAG) .
 
-push:
+.PHONY: push
+push: ## Publish Taal image to Docker Hub
 	@docker push pentimentolabs/taal:$(TAG)
 
-run:
+.PHONY: run
+run: ## Run a Docker container from the Taal image
 	@docker run --rm -it pentimentolabs/taal:$(TAG)
