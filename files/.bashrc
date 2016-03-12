@@ -12,7 +12,6 @@ alias ls='ls --color=auto'
 export EDITOR='vi'
 export PS1='\w\$ '
 
-# Larger bash history (allow 32³ entries; default is 500)
 export HISTFILE=/root/workbench/.bash_history
 export HISTSIZE=32768
 export HISTFILESIZE=$HISTSIZE
