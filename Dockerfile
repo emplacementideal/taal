@@ -20,10 +20,6 @@ ENV PYTHON_VERSION=2.7.11-r3
 RUN apk add --no-cache py-pip python=${PYTHON_VERSION}                         \
     && pip install --upgrade pip setuptools
 
-# Install Java environment
-ENV OPENJDK_VERSION=8.72.15-r2
-RUN apk add --no-cache openjdk8=${OPENJDK_VERSION}
-
 # Install Node.js environment
 ENV NODEJS_VERSION=4.3.0-r0
 RUN apk add --no-cache nodejs=${NODEJS_VERSION}
@@ -49,14 +45,6 @@ RUN apk add --no-cache --virtual build-dependencies gcc musl-dev postgresql-dev 
 # Install HTTPie
 ENV HTTPIE_VERSION=0.9.3
 RUN pip install --no-cache-dir --upgrade httpie==${HTTPIE_VERSION}
-
-# Install Drake
-ENV DRAKE_VERSION=1.0.1 \
-    DRAKE_COMMIT_HASH=ef36be08d0499c851546c60b020d5bb198263eb2
-RUN mkdir -p ${HOME}/.drakerc/jar                                                                                                                          \
-    && curl -L -o ${HOME}/.drakerc/jar/drake-${DRAKE_VERSION}-standalone.jar https://github.com/Factual/drake/releases/download/${DRAKE_VERSION}/drake.jar \
-    && curl -L -o /bin/drake https://raw.githubusercontent.com/Factual/drake/${DRAKE_COMMIT_HASH}/bin/drake                                                \
-    && chmod 755 /bin/drake
 
 # Install pv
 ENV PV_VERSION=1.6.0
