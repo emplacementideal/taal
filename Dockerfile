@@ -1,6 +1,6 @@
 FROM alpine:3.3
 MAINTAINER PentimentoLabs <contact@pentimentolabs.com>
-ENV TAAL_VERSION=0.5.0-dev
+ENV TAAL_VERSION=0.5.0
 
 # Define charset
 ENV LANG=en_US.utf8
