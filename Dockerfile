@@ -1,117 +1,52 @@
-FROM ubuntu:15.10
-MAINTAINER Pentimento <labs@pentimento.io>
+FROM alpine:3.3
+MAINTAINER PentimentoLabs <contact@pentimentolabs.com>
+ENV TAAL_VERSION=0.5.0
 
-# Set tool versions
-ENV CSVFIX_VERSION    1.6
-ENV CVSKIT_VERSION    0.9.1
-ENV DRAKE_COMMIT_HASH ef36be08d0499c851546c60b020d5bb198263eb2
-ENV DRAKE_VERSION     1.0.1
-ENV DRIP_HOME         /tmp/.drip
-ENV DRIP_COMMIT_HASH  master
-ENV DRIP_VERSION      0.2.5
-ENV JQ_VERSION        1.5
-ENV UCHARDET_VERSION  0.0.5
+# Define charset
+ENV LANG=en_US.utf8
 
-# Set TAAL variables
-ENV HOME /taal
+# Define timezone
+ENV TIMEZONE=Europe/Paris
+RUN apk add --no-cache tzdata                                                  \
+    && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime                       \
+    && echo ${TIMEZONE} >  /etc/timezone                                       \
+    && apk del --purge tzdata
 
-# Set environment variables
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8:en.UTF-8
-ENV LC_ALL en_US.UTF-8
+# Install general packages
+RUN apk add --no-cache bash ca-certificates curl graphviz jq make nodejs postgresql-client vim
 
-# Install system packages as well as GDAL and gnuplot
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
-    && apt-get install --yes                      \
-        build-essential                           \
-        cmake                                     \
-        curl                                      \
-        gdal-bin                                  \
-        feedgnuplot                               \
-        git                                       \
-        gnuplot                                   \
-        httpie                                    \
-        less                                      \
-        libmysqlclient-dev                        \
-        libpq-dev                                 \
-        locales                                   \
-        mercurial                                 \
-        ntp                                       \
-        openjdk-8-jdk                             \
-        p7zip                                     \
-        pv                                        \
-        python-dev                                \
-        python-pip                                \
-        sudo                                      \
-        unzip                                     \
-        vim                                       \
-        wget                                      \
-    && apt-get autoremove -y                      \
-    && apt-get clean                              \
-    && rm -rf /var/lib/apt/lists/*
+# Install GDAL
+ENV GDAL_VERSION=2.0.2
+RUN apk add --no-cache --virtual build-dependencies g++ gcc libc-dev                                          \
+    && curl -L http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz | tar xzf - -C /tmp \
+    && (cd /tmp/gdal-${GDAL_VERSION} && ./configure && make && make install)                                  \
+    && rm -rf /tmp/gdal-${GDAL_VERSION}                                                                       \
+    && apk del --purge build-dependencies
 
-# Configure locales
-RUN locale-gen en_US.UTF-8 \
-    && dpkg-reconfigure locales
+# Install pv
+ENV PV_VERSION=1.6.0
+RUN apk add --no-cache --virtual build-dependencies gcc libc-dev                                   \
+    && curl -L http://www.ivarch.com/programs/sources/pv-${PV_VERSION}.tar.bz2 | tar xjf - -C /tmp \
+    && (cd /tmp/pv-${PV_VERSION} && ./configure && make && make install)                           \
+    && rm -rf /tmp/pv-${PV_VERSION}                                                                \
+    && apk del --purge build-dependencies
 
-# Configure time
-RUN echo "Etc/UTC" > /etc/timezone \
-    && dpkg-reconfigure tzdata
+# Install Python environment
+RUN apk add --no-cache py-pip python                                           \
+    && pip install --upgrade pip setuptools
 
-# Configure sudo
-RUN sed --in-place --expression="s/\%sudo\t\ALL=(ALL:ALL) ALL/\%sudo\tALL=(ALL) NOPASSWD:ALL/" /etc/sudoers
+# Install PIP packages
+RUN pip install --no-cache-dir --upgrade awscli httpie
 
-# Create taal user
-RUN useradd --groups sudo --create-home --home-dir=$HOME --shell /bin/bash taal  \
-    && echo "taal:taal" | chpasswd                                               \
-    && touch $HOME/.sudo_as_admin_successful
+# Install CSVKit
+RUN apk add --no-cache --virtual build-dependencies gcc musl-dev postgresql-dev python-dev \
+    && pip install --no-cache-dir --upgrade csvkit psycopg2                                \
+    && apk del --purge build-dependencies
 
-# Configure Bash
+# Configure workspace
+RUN mkdir /root/workbench
 COPY ./files/.bashrc /root/.bashrc
-COPY ./files/.bashrc $HOME/.bashrc
-RUN chown -R taal:taal $HOME
-
-# Create placeholder folders
-RUN mkdir --mode=777 $HOME/data         \
-    && chown -R taal:taal $HOME/data    \
-    && mkdir --mode=777 $HOME/scripts   \
-    && chown -R taal:taal $HOME/scripts
-
-# Install csvfix
-RUN hg clone https://bitbucket.org/neilb/csvfix /tmp/csvfix \
-    && (cd /tmp/csvfix && hg up "version-$CSVFIX_VERSION")  \
-    && make --directory=/tmp/csvfix lin                     \
-    && cp /tmp/csvfix/csvfix/bin/csvfix /usr/local/bin      \
-    && rm -rf /tmp/csvfix
-
-# Install csvkit
-RUN pip install csvkit==$CVSKIT_VERSION \
-    && pip install MySQL-python         \
-    && pip install psycopg2             \
-    && rm -rf /tmp/pip_build_root
-
-# Install jq
-RUN wget --quiet --output-document=/usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-$JQ_VERSION/jq-linux64 \
-    && chmod +x /usr/local/bin/jq
-
-# Install uchardet
-RUN wget --quiet --output-document=- https://github.com/BYVoid/uchardet/archive/v$UCHARDET_VERSION.tar.gz | tar -xz -C /tmp/    \
-    && (cd /tmp/uchardet-$UCHARDET_VERSION && cmake . && make && make install)                                                  \
-    && rm -rf /tmp/uchardet-$UCHARDET_VERSION
-
-# Install Drake
-RUN mkdir -p $HOME/.drakerc/jar                                                                                                                                              \
-    && wget --quiet --output-document=$HOME/.drakerc/jar/drake-${DRAKE_VERSION}-standalone.jar https://github.com/Factual/drake/releases/download/${DRAKE_VERSION}/drake.jar \
-    && wget --quiet --output-document=/bin/drake https://raw.githubusercontent.com/Factual/drake/${DRAKE_COMMIT_HASH}/bin/drake                                              \
-    && chmod 755 /bin/drake
-
-# Install Drip
-RUN wget --quiet --output-document=/bin/drip https://raw.githubusercontent.com/ninjudd/drip/${DRIP_COMMIT_HASH}/bin/drip \
-    && chmod 755 /bin/drip                                                                                               \
-    && mkdir -p --mode=777 $DRIP_HOME/$DRIP_VERSION                                                                                 \
-    && /bin/drip upgrade
 
 # Run Bash
-USER taal
-WORKDIR /taal
+WORKDIR /root/workbench
 ENTRYPOINT ["bash"]
