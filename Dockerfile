@@ -31,6 +31,24 @@ RUN apk add --no-cache --virtual build-dependencies gcc libc-dev                
     && rm -rf /tmp/pv-${PV_VERSION}                                                                \
     && apk del --purge build-dependencies
 
+# Install csvfix
+ENV CSVFIX_VERSION=1.6
+RUN apk add --no-cache --virtual build-dependencies g++ mercurial              \
+    && hg clone https://bitbucket.org/neilb/csvfix /tmp/csvfix                 \
+    && (cd /tmp/csvfix && hg up "version-${CSVFIX_VERSION}")                   \
+    && make --directory=/tmp/csvfix lin                                        \
+    && cp /tmp/csvfix/csvfix/bin/csvfix /usr/local/bin                         \
+    && rm -rf /tmp/csvfix                                                      \
+    && apk del --purge build-dependencies
+
+# Install uchardet
+ENV UCHARDET_VERSION=0.0.5
+RUN apk add --no-cache --virtual build-dependencies cmake g++                                             \
+    && curl -L https://github.com/BYVoid/uchardet/archive/v${UCHARDET_VERSION}.tar.gz | tar xzf - -C /tmp \
+    && (cd /tmp/uchardet-${UCHARDET_VERSION} && cmake . && make && make install)                          \
+    && rm -rf /tmp/uchardet-${UCHARDET_VERSION}                                                           \
+    && apk del --purge build-dependencies
+
 # Install Python environment
 RUN apk add --no-cache py-pip python                                           \
     && pip install --upgrade pip setuptools
