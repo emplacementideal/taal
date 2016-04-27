@@ -75,7 +75,7 @@ This command being quite verbose you might want to abstract it in a script or a 
 License
 =======
 
-Copyright 2016 Pentimento
+Copyright 2016 Pentimento Labs
 
 *Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
